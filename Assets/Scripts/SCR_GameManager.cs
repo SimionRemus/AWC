@@ -210,7 +210,7 @@ public class SCR_GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        Lobbies.Instance.DeleteLobbyAsync(_lobbyId);        
+        Lobbies.Instance.DeleteLobbyAsync(_lobbyId);     
     }
 
     #endregion

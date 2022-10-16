@@ -11,17 +11,13 @@ public class SCR_PlayerMovement : NetworkBehaviour
     Camera cam;
     private Camera sceneCamera;
 
-    
-    #region DEBUG
-    public Text debugText;
-    #endregion
     #region Movement Variables
         [SerializeField]
         float speed;
         [SerializeField]
         float turnrate;
 
-        private Canvas connectUI;
+        private GameObject connectUI;
 
         [SerializeField]
         Behaviour[] compsToDisable;
@@ -38,9 +34,8 @@ public class SCR_PlayerMovement : NetworkBehaviour
     void Start()
     {
         rb=GetComponent<Rigidbody>();
-        connectUI=GameObject.Find("ConnectUI").GetComponent<Canvas>();
-        connectUI.enabled=false;
-        debugText=GameObject.Find("DebugText").GetComponent<Text>();
+        connectUI=GameObject.Find("UIDocument");
+        connectUI.SetActive(false);
         if(!IsOwner)
         {
             for(int i=0;i<compsToDisable.Length;i++)
@@ -65,7 +60,7 @@ public class SCR_PlayerMovement : NetworkBehaviour
         }
         if(connectUI!=null)
         {
-            connectUI.enabled=true;
+            connectUI.SetActive(true);
         }
     }
 
@@ -95,11 +90,7 @@ public class SCR_PlayerMovement : NetworkBehaviour
             //cam.transform.Rotate(-rotatDisplacement.x,0,0);
             currentCamRotX-=rotatDisplacement.x*turnrate;
             currentCamRotX=Mathf.Clamp(currentCamRotX,-85,85);
-            cam.transform.localEulerAngles=new Vector3(currentCamRotX,0,0);
-
-
-            debugText.text="Debug Text: "+cam.transform.localEulerAngles.x.ToString();
-            
+            cam.transform.localEulerAngles=new Vector3(currentCamRotX,0,0);         
         }
     }
 }

@@ -1,0 +1,30 @@
+.textfield-main-title {
+    font-size: 32px;
+    background-color: rgba(10, 63, 6, 0);
+    -unity-background-image-tint-color: rgba(204, 68, 68, 0.99);
+    color: rgba(10, 63, 6, 255);
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    -unity-text-outline-color: rgba(10, 63, 6, 255);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.textfield-main-title:hover {
+    background-color: rgba(133, 245, 146, 255);
+}
+
+.textfield-main-title:focus {
+    -unity-background-image-tint-color: rgba(255, 255, 255, 255);
+    background-color: rgba(10, 63, 6, 255);
+}
