@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/butons.uss?fileID=7433441132597879392&amp;guid=63aee2651a06ae9e6ae85c3de5aa5644&amp;type=3#butons" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/labels.uss?fileID=7433441132597879392&amp;guid=736ed9e59b721f0e3b14179b7a8db608&amp;type=3#labels" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/textfield.uss?fileID=7433441132597879392&amp;guid=a6c65ec497e1315dda310b39351a0f68&amp;type=3#textfield" />
+    <ui:VisualElement name="SettingsMenu" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/UI%20Toolkit/Backgrounds/archerBG.png?fileID=2800000&amp;guid=a557001f71cc5f665be5e39f4f6de588&amp;type=3#archerBG&apos;); -unity-background-image-tint-color: rgb(198, 255, 202); flex-direction: column;">
+        <ui:Label text="Settings" display-tooltip-when-elided="true" enable-rich-text="true" class="label-main-title" style="margin-top: 10%; margin-left: 20%; margin-right: 20%;" />
+        <ui:VisualElement name="AudioSettings">
+            <ui:Label text="Audio" display-tooltip-when-elided="true" enable-rich-text="true" class="label-subtitle" />
+        </ui:VisualElement>
+        <ui:VisualElement name="VideoSettings">
+            <ui:Label text="Video" display-tooltip-when-elided="true" class="label-subtitle" />
+        </ui:VisualElement>
+        <ui:Button text="BACK" display-tooltip-when-elided="true" name="BackButton" class="button-main-title" style="margin-left: 35%; margin-right: 35%;" />
+    </ui:VisualElement>
+</ui:UXML>

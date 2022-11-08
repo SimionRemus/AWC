@@ -1,10 +1,46 @@
 .label-main-title {
     font-size: 72px;
-    color: rgba(9, 48, 1, 255);
+    color: rgb(9, 48, 1);
     -unity-font-style: bold;
     -unity-text-align: upper-center;
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.label-subtitle {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: rgb(9, 48, 1);
+    font-size: 45px;
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+}
+
+.label-subtitle-white {
+    color: rgba(255, 255, 255, 255);
+    -unity-font-style: bold;
+    font-size: 45px;
+    border-left-color: rgba(96, 52, 52, 0);
+    border-right-color: rgba(96, 52, 52, 0);
+    border-top-color: rgba(96, 52, 52, 0);
+    border-bottom-color: rgba(96, 52, 52, 0);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    padding-top: 0;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
 }

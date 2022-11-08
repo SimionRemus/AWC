@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90b5dbf2660cfc011a6153f282ef215d, type: 3}
+  m_Name: lobbyentry2
+  m_EditorClassIdentifier: Assembly-CSharp::LobbyEntryList
+  username: Dorel
+  playercount: 1/16
+  gametype: 3
+  winCondition: 0
+  winConditionCount: 5
+  mapName: Hell
+  isPassProtected: 1

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Unity.Netcode;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class SCR_PlayerMovement : NetworkBehaviour
 {
@@ -11,13 +11,14 @@ public class SCR_PlayerMovement : NetworkBehaviour
     Camera cam;
     private Camera sceneCamera;
 
+    private GameObject UI_playPanel;
+    private GameObject spawnPoints;
+
     #region Movement Variables
         [SerializeField]
         float speed;
         [SerializeField]
         float turnrate;
-
-        private GameObject connectUI;
 
         [SerializeField]
         Behaviour[] compsToDisable;
@@ -34,8 +35,9 @@ public class SCR_PlayerMovement : NetworkBehaviour
     void Start()
     {
         rb=GetComponent<Rigidbody>();
-        connectUI=GameObject.Find("UIDocument");
-        connectUI.SetActive(false);
+        UI_playPanel=GameObject.Find("PlayMenu");
+        spawnPoints=GameObject.Find("SpawnPoints");
+
         if(!IsOwner)
         {
             for(int i=0;i<compsToDisable.Length;i++)
@@ -49,6 +51,8 @@ public class SCR_PlayerMovement : NetworkBehaviour
             if(sceneCamera!=null)
                 sceneCamera.gameObject.SetActive(false);
         }
+
+        this.transform.position=spawnPoints.transform.GetChild(Random.Range(0,spawnPoints.transform.childCount-1)).transform.position;
     }
 
     
@@ -58,10 +62,9 @@ public class SCR_PlayerMovement : NetworkBehaviour
         {
             sceneCamera.gameObject.SetActive(true);
         }
-        if(connectUI!=null)
-        {
-            connectUI.SetActive(true);
-        }
+
+        UI_playPanel.SetActive(true);
+        UI_playPanel.GetComponent<UIDocument>().rootVisualElement.style.display=DisplayStyle.Flex;
     }
 
     // Update is called once per frame
