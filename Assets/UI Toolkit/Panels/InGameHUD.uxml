@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/labels.uss?fileID=7433441132597879392&amp;guid=736ed9e59b721f0e3b14179b7a8db608&amp;type=3#labels" />
+    <ui:VisualElement name="TopHUD" style="height: 100px; width: 100%; flex-direction: row;">
+        <ui:Label text="GameID: DUMMY_TEXT" display-tooltip-when-elided="true" name="LobbyID" class="label-subtitle label-subtitle-white" />
+        <ui:VisualElement name="LeftRightBarrier" style="width: 100%;" />
+        <ui:Label display-tooltip-when-elided="true" name="CururencyIcon" style="width: 100px; height: 100px; background-image: url(&apos;project://database/Assets/UI_Sprites/Illustration-of-gold-coins-on-transparent-background-PNG.png?fileID=2800000&amp;guid=9244ac313330a3c879ef5b5da5161aa2&amp;type=3#Illustration-of-gold-coins-on-transparent-background-PNG&apos;);" />
+        <ui:Label text="100" display-tooltip-when-elided="true" name="CurrencyValue" class="label-subtitle-white" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Empty" style="height: 100%; width: 100%; bottom: auto;" />
+    <ui:VisualElement name="BottomHUD" style="height: 100px; width: 100%;" />
+</ui:UXML>

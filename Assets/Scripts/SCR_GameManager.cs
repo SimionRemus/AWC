@@ -12,16 +12,25 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 
 using Unity.Netcode;
-using UnityEngine.Networking;
 using Unity.Netcode.Transports.UTP;
+
+using UnityEngine.UIElements;
+using System.Linq;
 
 public class SCR_GameManager : MonoBehaviour
 {
+    public List<string> Maps=new List<string>{
+        "Dark Forest",
+        "Ominous Realm"
+    };
     private string _lobbyId;
+    public string inputPassword;
     private RelayHostData _hostData;
     private RelayJoinData _joinData;
+    private bool isCorrect;
+    private IEnumerator myCoroutine;
 
-
+    [SerializeField] GameObject checkPassUI;
 
     // Start is called before the first frame update
     async void Start()
@@ -31,12 +40,8 @@ public class SCR_GameManager : MonoBehaviour
         SetupEvents();
 
         await SignInAnonymouslyAsync();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //lobbyEntryList=new List<LobbyEntry>();
     }
 
     #region UnityLogin
@@ -76,64 +81,73 @@ public class SCR_GameManager : MonoBehaviour
 
     #region Lobby
 
-    public async void FindMatch()
+    public async Task<string> FindMatch(string enteredLobbyId)
     {
+        if(myCoroutine!=null)
+            StopCoroutine(myCoroutine);
         Debug.Log("Looking for a lobby...");
         try
         {
-            //We can add filters here
+            Lobby lobby;
             QuickJoinLobbyOptions options=new QuickJoinLobbyOptions();
-
-            //Quick-join a random lobby that matches options above
-            Lobby lobby=await Lobbies.Instance.QuickJoinLobbyAsync(options);
-
-            Debug.Log("Joined Lobby: "+lobby.Id);
-            Debug.Log("Lobby playercount: "+lobby.Players.Count);
-
-            //Get Relay code from created match
-            string joinCode=lobby.Data["joinCode"].Value;
-            /*JoinAllocation*/var allocation=await Relay.Instance.JoinAllocationAsync(joinCode);
-
-            //get join data
-            _joinData=new RelayJoinData
+                options.Filter=new List<QueryFilter>()
+                {
+                    new QueryFilter(
+                        QueryFilter.FieldOptions.S4,
+                        "",
+                        QueryFilter.OpOptions.EQ
+                    )
+                };
+            if(enteredLobbyId==null)
             {
-                Key=allocation.Key,
-                Port=(ushort) allocation.RelayServer.Port,
-                AllocationID=allocation.AllocationId,
-                AllocationIDBytes=allocation.AllocationIdBytes,
-                ConnectionData=allocation.ConnectionData,
-                HostConnectionData=allocation.HostConnectionData,
-                IPv4Address=allocation.RelayServer.IpV4
-            };
-
-            //set Transport data
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
-                _joinData.IPv4Address,
-                _joinData.Port,
-                _joinData.AllocationIDBytes,
-                _joinData.Key,
-                _joinData.ConnectionData,
-                _joinData.HostConnectionData
-            );
-
-            //Start Client
-            NetworkManager.Singleton.StartClient();
-
+                //We can add filters here
+                
+                //Quick-join a random lobby that matches options above
+                lobby=await Lobbies.Instance.QuickJoinLobbyAsync(options);
+                _lobbyId=lobby.Id;
+            }
+            else
+            {
+                _lobbyId=enteredLobbyId;
+                lobby=await Lobbies.Instance.JoinLobbyByIdAsync(_lobbyId);
+            }
+            
+            //Check here if lobby can be entered
+            if(lobby.Data["Password"].Value=="")//There is no password on the lobby
+            {
+                return await JoinCurrentlySelectedLobby(lobby);
+            }
+            else //check the password
+            {
+                myCoroutine=IsPasswordValid(lobby, lobby.Data["Password"].Value);
+                StartCoroutine(myCoroutine);
+                return _lobbyId;
+                
+            }
         }
         catch(LobbyServiceException e)
         {
             //There is no lobby, we create one:
+            string temp_lobbyID;
             Debug.Log("Cannot find a lobby: "+e);
-            CreateMatch();
+            if(enteredLobbyId==null)
+            {
+                temp_lobbyID = await CreateMatch("QuickMatch",8,GameType.FFA,WinningCondition.Time,30, Maps[0],"");
+                return temp_lobbyID;
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 
-    private async void CreateMatch()
+    public async Task<string> CreateMatch(string lobbyName, int playercount,GameType gameType, WinningCondition winCond, int winContCount,string mapName, string password)
     {
         Debug.Log("Creating a new lobby...");
 
         //External connections
-        int maxConnections =1;
+        int maxConnections =playercount;
 
         try
         {
@@ -151,10 +165,8 @@ public class SCR_GameManager : MonoBehaviour
 
             //get JoinCode
             _hostData.JoinCode=await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId); 
-
             //create a new Lobby based on the Relay above
-            string lobbyName="gameLobbyExample";
-            int maxPlayers=2;
+            //int maxPlayers=2;
             CreateLobbyOptions options=new CreateLobbyOptions();
             options.IsPrivate=false;
 
@@ -164,12 +176,44 @@ public class SCR_GameManager : MonoBehaviour
                 {
                     "joinCode",new DataObject(DataObject.VisibilityOptions.Member,_hostData.JoinCode)
                 },
-
+                {
+                    "GameType",new DataObject(
+                        DataObject.VisibilityOptions.Public,
+                        gameType.ToString(),
+                        DataObject.IndexOptions.S1
+                    )
+                },
+                {
+                    "WinningCondition",new DataObject(
+                        DataObject.VisibilityOptions.Public,
+                        winCond.ToString(),
+                        DataObject.IndexOptions.S2
+                    )
+                },
+                {
+                    "WinningConditionValue",new DataObject(
+                        DataObject.VisibilityOptions.Public,
+                        winContCount.ToString(),
+                        DataObject.IndexOptions.N1
+                    )
+                },
+                {
+                    "MapName",new DataObject(
+                        DataObject.VisibilityOptions.Public,
+                        mapName,
+                        DataObject.IndexOptions.S3
+                    )
+                },
+                {
+                    "Password",new DataObject(
+                        DataObject.VisibilityOptions.Public,
+                        password,
+                        DataObject.IndexOptions.S4
+                    )
+                },
             };
 
-
-
-            var lobby=await Lobbies.Instance.CreateLobbyAsync(lobbyName,maxPlayers,options);
+            Lobby lobby=await Lobbies.Instance.CreateLobbyAsync(lobbyName,playercount,options);
             _lobbyId=lobby.Id;
 
             Debug.Log("Created lobby: "+lobby.Id);
@@ -188,6 +232,7 @@ public class SCR_GameManager : MonoBehaviour
 
             //START THE HOST!
             NetworkManager.Singleton.StartHost();
+            return _lobbyId;
 
         }
         catch(LobbyServiceException e)
@@ -195,7 +240,22 @@ public class SCR_GameManager : MonoBehaviour
             Console.WriteLine(e);
             throw;
         }
+
+        
     }
+
+
+
+    public async Task<List<Lobby>> GetLobbiesList()
+    {
+        List<Lobby> lobbies = (await Lobbies.Instance.QueryLobbiesAsync()).Results;
+        // foreach (Lobby lobby in lobbies)
+        // {
+        //     Debug.Log(lobby.Id);
+        // }
+        return lobbies;
+    }
+
 
     private IEnumerator HeartbeatLobbyCoroutine(string lobbyId, float waitTimeSeconds)
     {
@@ -242,4 +302,79 @@ public class SCR_GameManager : MonoBehaviour
 
     #endregion
 
+    private async Task<string> JoinCurrentlySelectedLobby(Lobby lobby)
+    {
+        Debug.Log("Joined Lobby: "+lobby.Id);
+                Debug.Log("Lobby playercount: "+lobby.Players.Count);
+
+                //Get Relay code from created match
+                string joinCode=lobby.Data["joinCode"].Value;
+
+                /*JoinAllocation*/
+                var allocation=await Relay.Instance.JoinAllocationAsync(joinCode);
+
+                //get join data
+                _joinData=new RelayJoinData
+                {
+                    Key=allocation.Key,
+                    Port=(ushort) allocation.RelayServer.Port,
+                    AllocationID=allocation.AllocationId,
+                    AllocationIDBytes=allocation.AllocationIdBytes,
+                    ConnectionData=allocation.ConnectionData,
+                    HostConnectionData=allocation.HostConnectionData,
+                    IPv4Address=allocation.RelayServer.IpV4
+                };
+
+                //set Transport data
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
+                    _joinData.IPv4Address,
+                    _joinData.Port,
+                    _joinData.AllocationIDBytes,
+                    _joinData.Key,
+                    _joinData.ConnectionData,
+                    _joinData.HostConnectionData
+                );
+
+                //Start Client
+                NetworkManager.Singleton.StartClient();
+                return _lobbyId;
+    }
+
+    private IEnumerator IsPasswordValid(Lobby lobby, string password){
+
+        CheckPassToJoinPresenter checkPassCS=checkPassUI.GetComponent<CheckPassToJoinPresenter>();
+        checkPassUI.SetActive(true);
+        checkPassUI.GetComponent<UIDocument>().rootVisualElement.style.display=DisplayStyle.Flex;
+        checkPassCS.password=password;
+        var delay=new WaitForSecondsRealtime(0.1f);
+        while(!checkPassCS.isPasscorrect)
+        {
+            yield return delay;
+        }
+        var _=  JoinCurrentlySelectedLobby(lobby);
+    }
 }
+
+[System.Serializable]
+public struct LobbyEntry
+{
+    public string username;
+    public string playercount;
+    public GameType gametype;
+    public WinningCondition winCondition;
+    public int winConditionCount;
+    public string mapName;
+    public bool isPassProtected;
+    public string _joinCode;
+}
+
+public enum GameType
+{
+    FFA,TFFA,CTF,KotH
+}
+
+public enum WinningCondition
+{
+    Time, Kills
+}
+

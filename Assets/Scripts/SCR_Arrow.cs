@@ -57,6 +57,6 @@ public class SCR_Arrow : MonoBehaviour
 
     private void PositionTrack()
     {
-        Debug.DrawLine(transform.position, transform.position + rb.velocity.normalized, Color.red, 300);
+        Debug.DrawLine(transform.position, transform.position + rb.velocity.normalized, Color.red, 300f,false);
     }
 }

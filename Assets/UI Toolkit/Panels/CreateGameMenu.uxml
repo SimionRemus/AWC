@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/labels.uss?fileID=7433441132597879392&amp;guid=736ed9e59b721f0e3b14179b7a8db608&amp;type=3#labels" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/textfield.uss?fileID=7433441132597879392&amp;guid=a6c65ec497e1315dda310b39351a0f68&amp;type=3#textfield" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/butons.uss?fileID=7433441132597879392&amp;guid=63aee2651a06ae9e6ae85c3de5aa5644&amp;type=3#butons" />
+    <ui:VisualElement style="width: 100%; height: 100%; background-image: url(&apos;project://database/Assets/UI%20Toolkit/Backgrounds/archerBG.png?fileID=2800000&amp;guid=a557001f71cc5f665be5e39f4f6de588&amp;type=3#archerBG&apos;); -unity-background-image-tint-color: rgb(86, 178, 78);">
+        <ui:Label text="Create New Game" display-tooltip-when-elided="true" name="TitleLabel" class="label-main-title" style="align-items: auto; width: 40%; height: 10%;" />
+        <ui:VisualElement name="Content" class="label-subtitle" style="width: 80%; margin-left: 10%; margin-bottom: 20px; height: 100%; margin-right: 10%; -unity-font-style: bold;">
+            <ui:TextField picking-mode="Ignore" label="Game Name: " value="MyCustomGame" text="MyCustomGame" name="GameName" style="flex-direction: row; width: 100%; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; font-size: 30px;" />
+            <ui:SliderInt picking-mode="Ignore" label="Player Count: " value="8" high-value="16" low-value="2" show-input-field="true" name="PlayCount" style="width: 100%; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; font-size: 30px;" />
+            <ui:DropdownField label="Map:" index="0" choices="-" name="MapName" style="width: 100%; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; font-size: 30px;" />
+            <ui:DropdownField label="Game Type:" index="0" choices="-" name="GameType" style="width: 100%; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; font-size: 30px;" />
+            <ui:DropdownField label="Win Condition: " index="0" choices="-" name="WinCondition" style="width: 100%; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; font-size: 30px;" />
+            <ui:SliderInt picking-mode="Ignore" label="Win Condition Value:" value="12" high-value="120" low-value="10" show-input-field="true" name="WinConditionValue" inverted="false" style="width: 100%; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; height: auto; font-size: 30px;" />
+            <ui:TextField picking-mode="Ignore" label="Password: " name="Password" is-delayed="false" style="font-size: 30px; -unity-font-style: bold;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Buttons" style="flex-direction: column; justify-content: center; align-items: center; width: 40%; margin-left: 30%; margin-right: 30%; height: 30%; margin-bottom: 5%; margin-top: 5%;">
+            <ui:Button text="Start Game" display-tooltip-when-elided="true" name="StartGame" class="button-main-title" />
+            <ui:Button text="Return to Play Menu" display-tooltip-when-elided="true" name="Return" class="button-main-title" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

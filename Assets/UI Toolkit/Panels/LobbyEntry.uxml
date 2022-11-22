@@ -3,12 +3,12 @@
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/labels.uss?fileID=7433441132597879392&amp;guid=736ed9e59b721f0e3b14179b7a8db608&amp;type=3#labels" />
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/butons.uss?fileID=7433441132597879392&amp;guid=63aee2651a06ae9e6ae85c3de5aa5644&amp;type=3#butons" />
     <ui:VisualElement name="VisualElement" style="flex-direction: row; width: 100%; height: 100px; background-image: url(&apos;project://database/Assets/gradient.png?fileID=2800000&amp;guid=9b8467dea9d8bfdcd89230eb79a8591d&amp;type=3#gradient&apos;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);">
-        <ui:Label text="Username" display-tooltip-when-elided="true" name="creator" class="label-subtitle label-subtitle-white" style="width: 20%;" />
-        <ui:Label text="3/8" display-tooltip-when-elided="true" name="numberOfPlayers" class="label-subtitle label-subtitle-white" style="width: 5%;" />
-        <ui:Label text="FFA" display-tooltip-when-elided="true" name="gameType" class="label-subtitle label-subtitle-white" style="width: 15%;" />
-        <ui:Label text="Kills" display-tooltip-when-elided="true" name="winCondition" class="label-subtitle label-subtitle-white" style="width: 10%;" />
-        <ui:Label text="30" display-tooltip-when-elided="true" name="winConditionValue" class="label-subtitle label-subtitle-white" style="width: 10%;" />
-        <ui:Label text="HauntedForest" display-tooltip-when-elided="true" name="map" class="label-subtitle label-subtitle-white" style="width: 30%; margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;" />
-        <ui:Label text="Yes" display-tooltip-when-elided="true" name="password" class="label-subtitle label-subtitle-white" style="width: auto;" />
+        <ui:Label text="Username" display-tooltip-when-elided="true" name="creator" class="label-subtitle label-subtitle-white" style="width: 20%; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgb(255, 255, 255); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0);" />
+        <ui:Label text="3/8" display-tooltip-when-elided="true" name="numberOfPlayers" class="label-subtitle label-subtitle-white" style="width: 5%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); font-size: 40px;" />
+        <ui:Label text="FFA" display-tooltip-when-elided="true" name="gameType" class="label-subtitle label-subtitle-white" style="width: 15%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); font-size: 40px;" />
+        <ui:Label text="Kills" display-tooltip-when-elided="true" name="winCondition" class="label-subtitle label-subtitle-white" style="width: 10%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); font-size: 40px;" />
+        <ui:Label text="30" display-tooltip-when-elided="true" name="winConditionValue" class="label-subtitle label-subtitle-white" style="width: 10%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); font-size: 40px;" />
+        <ui:Label text="HauntedForest" display-tooltip-when-elided="true" name="map" class="label-subtitle label-subtitle-white" style="width: 30%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); height: 100%; font-size: 40px;" />
+        <ui:Label text="Yes" display-tooltip-when-elided="true" name="password" class="label-subtitle label-subtitle-white" style="width: 10%; border-left-color: rgb(255, 255, 255); border-right-color: rgba(255, 255, 255, 0); font-size: 40px;" />
     </ui:VisualElement>
 </ui:UXML>
