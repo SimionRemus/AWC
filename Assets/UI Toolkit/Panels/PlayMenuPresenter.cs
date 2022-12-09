@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
-
-using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 
 public class PlayMenuPresenter : MonoBehaviour
@@ -36,6 +33,7 @@ public class PlayMenuPresenter : MonoBehaviour
             root.style.display=DisplayStyle.None;
             gameObject.SetActive(false);
             
+            
             mainPanel.SetActive(true);
             mainPanel.GetComponent<UIDocument>().rootVisualElement.style.display=DisplayStyle.Flex;
         };
@@ -45,16 +43,15 @@ public class PlayMenuPresenter : MonoBehaviour
         };
 
         root.Q<Button>("QuickPlay").clicked+= async ()=>{
-           joinCode = await gameManager.GetComponent<SCR_GameManager>().FindMatch(null);
-            bool __=await RebuildList(root);
+                joinCode = await gameManager.GetComponent<SCR_GameManager>().FindMatch(null);
+                bool __ = await RebuildList(root);
 
-            root.style.display=DisplayStyle.None;
-            gameObject.SetActive(false);
+                root.style.display = DisplayStyle.None;
+                gameObject.SetActive(false);
 
-            gameHUD.SetActive(true);
-            gameHUD.GetComponent<UIDocument>().rootVisualElement.style.display=DisplayStyle.Flex;
-            gameHUD.GetComponent<UIDocument>().rootVisualElement.Q<Label>("LobbyID").text="Game ID: "+joinCode;
-            
+                gameHUD.SetActive(true);
+                gameHUD.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+                gameHUD.GetComponent<UIDocument>().rootVisualElement.Q<Label>("LobbyID").text = "Game ID: " + joinCode;
         };
 
         root.Q<Button>("CreateGame").clicked+=()=>{

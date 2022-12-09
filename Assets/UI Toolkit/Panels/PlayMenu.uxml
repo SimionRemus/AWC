@@ -2,16 +2,16 @@
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/butons.uss?fileID=7433441132597879392&amp;guid=63aee2651a06ae9e6ae85c3de5aa5644&amp;type=3#butons" />
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/labels.uss?fileID=7433441132597879392&amp;guid=736ed9e59b721f0e3b14179b7a8db608&amp;type=3#labels" />
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/textfield.uss?fileID=7433441132597879392&amp;guid=a6c65ec497e1315dda310b39351a0f68&amp;type=3#textfield" />
-    <ui:VisualElement name="PlayPanel" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/UI%20Toolkit/Backgrounds/archerBG.png?fileID=2800000&amp;guid=a557001f71cc5f665be5e39f4f6de588&amp;type=3#archerBG&apos;); -unity-background-image-tint-color: rgb(205, 255, 201);">
+    <ui:VisualElement name="PlayPanel" focusable="true" picking-mode="Ignore" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/UI%20Toolkit/Backgrounds/archerBG.png?fileID=2800000&amp;guid=a557001f71cc5f665be5e39f4f6de588&amp;type=3#archerBG&apos;); -unity-background-image-tint-color: rgb(205, 255, 201);">
         <ui:Label text="Play!" display-tooltip-when-elided="true" class="label-main-title" style="align-items: auto; justify-content: flex-start; left: auto; right: auto; flex-direction: column; width: 20%;" />
         <ui:VisualElement name="Container" style="flex-direction: row; height: 85%; width: 94%; justify-content: flex-start; align-items: center; left: 3%; top: auto;">
             <ui:VisualElement name="Buttons" style="width: 20%; height: 100%; margin-top: 0; padding-top: 10%;">
-                <ui:Button text="Quick Play" display-tooltip-when-elided="true" name="QuickPlay" class="button-main-title" />
-                <ui:Button text="Create New" display-tooltip-when-elided="true" name="CreateGame" class="button-main-title" />
-                <ui:Button text="Join Selected" display-tooltip-when-elided="true" name="JoinSelected" class="button-main-title" />
-                <ui:Button text="Join with Code:" display-tooltip-when-elided="true" name="JoinCode" class="button-main-title" />
-                <ui:TextField picking-mode="Ignore" is-delayed="false" name="CodeString" class="textfield-main-title" />
-                <ui:Button text="Back to menu" display-tooltip-when-elided="true" name="BackButton" class="button-main-title" />
+                <ui:Button text="Quick Play" display-tooltip-when-elided="true" name="QuickPlay" focusable="true" class="button-main-title" />
+                <ui:Button text="Create New" display-tooltip-when-elided="true" name="CreateGame" focusable="true" class="button-main-title" />
+                <ui:Button text="Join Selected" display-tooltip-when-elided="true" name="JoinSelected" focusable="false" class="button-main-title" />
+                <ui:Button text="Join with Code:" display-tooltip-when-elided="true" name="JoinCode" focusable="true" class="button-main-title" />
+                <ui:TextField picking-mode="Ignore" is-delayed="false" name="CodeString" focusable="true" class="textfield-main-title" />
+                <ui:Button text="Back to menu" display-tooltip-when-elided="true" name="BackButton" focusable="true" class="button-main-title" />
             </ui:VisualElement>
             <ui:VisualElement name="Lobby" style="width: 100%; height: 100%;">
                 <ui:VisualElement name="Header" style="width: 100%; height: 100px; flex-direction: row; align-items: center; justify-content: center;">
@@ -25,7 +25,7 @@
                 </ui:VisualElement>
                 <ui:ListView focusable="true" name="LobbyList" fixed-item-height="100" show-border="true" show-alternating-row-backgrounds="ContentOnly" show-foldout-header="false" show-add-remove-footer="false" horizontal-scrolling="false" style="width: 100%; height: 100%; -unity-background-image-tint-color: rgba(255, 255, 255, 0.7); border-top-left-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);" />
             </ui:VisualElement>
-            <ui:Button text="Refresh&#10;Lobby&#10;List" display-tooltip-when-elided="true" name="Refresh" class="button-main-title" style="-unity-text-align: middle-center; top: auto; align-items: auto; justify-content: flex-start; margin-left: 20px; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; white-space: normal; transform-origin: top; translate: 0 -200%;" />
+            <ui:Button text="Refresh&#10;Lobby&#10;List" display-tooltip-when-elided="true" name="Refresh" focusable="true" class="button-main-title" style="-unity-text-align: middle-center; top: auto; align-items: auto; justify-content: flex-start; margin-left: 20px; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; white-space: normal; transform-origin: top; translate: 0 -200%;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

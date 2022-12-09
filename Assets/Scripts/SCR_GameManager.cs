@@ -15,7 +15,6 @@ using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 
 using UnityEngine.UIElements;
-using System.Linq;
 
 public class SCR_GameManager : MonoBehaviour
 {
@@ -66,6 +65,17 @@ public class SCR_GameManager : MonoBehaviour
 
     async Task SignInAnonymouslyAsync()
     {
+
+        #if UNITY_EDITOR
+                if (ParrelSync.ClonesManager.IsClone())
+                {
+                    // When using a ParrelSync clone, we'll automatically switch to a different authentication profile.
+                    // This will cause the clone to sign in as a different anonymous user account.  If you're going to use
+                    // authentication profiles for some other purpose, you may need to change the profile name.
+                    string customArgument = ParrelSync.ClonesManager.GetArgument();
+                    AuthenticationService.Instance.SwitchProfile($"Clone_{customArgument}_Profile");
+                }
+        #endif
         try
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();

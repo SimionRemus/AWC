@@ -6,6 +6,8 @@
         <ui:Label display-tooltip-when-elided="true" name="CururencyIcon" style="width: 100px; height: 100px; background-image: url(&apos;project://database/Assets/UI_Sprites/Illustration-of-gold-coins-on-transparent-background-PNG.png?fileID=2800000&amp;guid=9244ac313330a3c879ef5b5da5161aa2&amp;type=3#Illustration-of-gold-coins-on-transparent-background-PNG&apos;);" />
         <ui:Label text="100" display-tooltip-when-elided="true" name="CurrencyValue" class="label-subtitle-white" />
     </ui:VisualElement>
-    <ui:VisualElement name="Empty" style="height: 100%; width: 100%; bottom: auto;" />
+    <ui:VisualElement name="Empty" style="height: 100%; width: 100%; bottom: auto; justify-content: center; align-items: center;">
+        <ui:VisualElement name="CrossHairs" style="width: 50px; height: 50px; justify-content: center; align-items: center; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; background-image: url(&apos;project://database/Packages/com.unity.timeline/Editor/StyleSheets/Images/Icons/d_TrackRecordButtonEnabled.png?fileID=2800000&amp;guid=0e5ba0f04df278944a8f5a62f64f5aa6&amp;type=3#d_TrackRecordButtonEnabled&apos;);" />
+    </ui:VisualElement>
     <ui:VisualElement name="BottomHUD" style="height: 100px; width: 100%;" />
 </ui:UXML>

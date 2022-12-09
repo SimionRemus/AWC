@@ -9,7 +9,6 @@ public class SCR_Arrow : MonoBehaviour
     private Rigidbody rb;
 
     private bool didHit;
-    private Vector3 torque;
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -35,9 +34,12 @@ public class SCR_Arrow : MonoBehaviour
 
     private IEnumerator LookAt()
     {
-        transform.LookAt(transform.position+rb.velocity);
-        PositionTrack();
-        yield return null;
+        while (!didHit)
+        {
+            PositionTrack();
+            transform.LookAt(transform.position + rb.velocity);
+            yield return null;
+        }
     }
     private void OnCollisionEnter(Collision other)
     {
@@ -46,8 +48,8 @@ public class SCR_Arrow : MonoBehaviour
         if(other.collider.CompareTag("Terrain")||other.collider.CompareTag("Player")) //use this to check what was hit, current condition is always true;
         {
             didHit=true;
-            rb.isKinematic=true;
             StopCoroutine(LookAt());
+            rb.isKinematic=true;
             // rb.velocity=Vector3.zero;
             // rb.angularVelocity=Vector3.zero;
             // transform.SetParent(other.transform);
