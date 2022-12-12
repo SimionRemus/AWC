@@ -50,6 +50,7 @@ public class SCR_Arrow : MonoBehaviour
             didHit=true;
             StopCoroutine(LookAt());
             rb.isKinematic=true;
+            gameObject.GetComponent<CapsuleCollider>().enabled = false;
             // rb.velocity=Vector3.zero;
             // rb.angularVelocity=Vector3.zero;
             // transform.SetParent(other.transform);

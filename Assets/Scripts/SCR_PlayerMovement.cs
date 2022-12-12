@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using Unity.Netcode;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using UnityEngine.Animations.Rigging;
 
 public class SCR_PlayerMovement : NetworkBehaviour
 {
@@ -25,9 +26,11 @@ public class SCR_PlayerMovement : NetworkBehaviour
     [SerializeField]
     private float runSpeed; //Change these in animator blend tree to match;
     [SerializeField]
+    private Transform targetAim;
+    private bool isAiming;
     private float gravity;
-    private float jumpHeight = 6f;
-    private float jumpTime = 10f;
+    private float jumpHeight = 3f;
+    private float jumpTime = 8f;
     private float initJumpVelocity;
     private float verticalMovement;
     private float JumpCoefficient = 4f;
@@ -54,6 +57,8 @@ public class SCR_PlayerMovement : NetworkBehaviour
     #endregion
     #region Animation
     [SerializeField] private Animator animator;
+    [SerializeField] private Rig aimRig;
+    [SerializeField] private Transform rigTarget;
     #endregion
 
     private void Awake()
@@ -83,6 +88,10 @@ public class SCR_PlayerMovement : NetworkBehaviour
 
         playerControls.CharacterControls._DEBUG_KILL.started += OnDebugK;
         playerControls.CharacterControls._DEBUG_KILL.canceled += OnDebugK;
+
+        playerControls.CharacterControls.Aim.started += OnTargetting;
+        playerControls.CharacterControls.Aim.performed += OnTargetting;
+        playerControls.CharacterControls.Aim.canceled += OnTargetting;
 
     }
 
@@ -181,7 +190,24 @@ public class SCR_PlayerMovement : NetworkBehaviour
     }
 
     #region InputHandling
-
+    private void OnTargetting(InputAction.CallbackContext context)
+    {
+        //targetAim
+        if(context.canceled)
+        {
+            isAiming = false;
+            //release arrow
+            animator.SetLayerWeight(1, 0f);
+            aimRig.weight = 0;
+        }
+        if(context.started || context.performed)
+        {
+            isAiming = true;
+            //play aiming animation
+            animator.SetLayerWeight(1, 1f);
+            aimRig.weight = 1;
+        }
+    }
     private void OnMovementInput(InputAction.CallbackContext context)
     {
 
@@ -270,6 +296,7 @@ public class SCR_PlayerMovement : NetworkBehaviour
             currentCamRotX -= rotatDisplacement.x;
             currentCamRotX = Mathf.Clamp(currentCamRotX, -85, 85);
             cam.transform.localEulerAngles = new Vector3(currentCamRotX, 0, 0);
+            rigTarget.position = cam.transform.forward * 1000;
         }
     }
 

@@ -6,6 +6,7 @@ using Unity.Netcode;
 public class SCR_ShootArrow : NetworkBehaviour
 {
     [SerializeField] private SCR_Arrow prefab;
+    [SerializeField] private Transform lookDirection;
 
     private SCR_Arrow currentArrow;
 
@@ -15,15 +16,11 @@ public class SCR_ShootArrow : NetworkBehaviour
 
     private bool isReloading;
 
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
     private void Start()
     {
         reloadTime=2f;
         currentArrow=Instantiate(original: prefab,arrowSpawnPoint.position,arrowSpawnPoint.rotation);
-        currentArrow.transform.SetParent(transform.GetChild(1));
+        currentArrow.transform.SetParent(arrowSpawnPoint);
     }
 
     /// <summary>
@@ -35,7 +32,7 @@ public class SCR_ShootArrow : NetworkBehaviour
         {
             return;
         }
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonUp(0))
         {
             Fire(15f);
         }
@@ -53,14 +50,15 @@ public class SCR_ShootArrow : NetworkBehaviour
     {
         yield return new WaitForSeconds(reloadTime);
         currentArrow=Instantiate(prefab,arrowSpawnPoint.position,arrowSpawnPoint.rotation);
-        currentArrow.transform.SetParent(transform.GetChild(1));
+        currentArrow.transform.SetParent(arrowSpawnPoint);
         isReloading=false;
     }
 
     public void Fire(float firepower)
     {
         if(isReloading||currentArrow==null) return;
-        var force=arrowSpawnPoint.TransformDirection(Vector3.forward * firepower);
+        currentArrow.transform.rotation = lookDirection.rotation;
+        var force=lookDirection.TransformDirection(Vector3.forward * firepower);
         currentArrow.transform.SetParent(null);
         currentArrow.Fly(force);
         currentArrow=null;

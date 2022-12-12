@@ -116,6 +116,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""deb80fd2-4d68-49ad-bf53-be448e983d8b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -272,6 +281,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""_DEBUG_KILL"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99dbc48e-36c1-4f13-953d-cd188723cdf1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -290,6 +310,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_CharacterControls_ToggleCursor = m_CharacterControls.FindAction("ToggleCursor", throwIfNotFound: true);
         m_CharacterControls_Dance = m_CharacterControls.FindAction("Dance", throwIfNotFound: true);
         m_CharacterControls__DEBUG_KILL = m_CharacterControls.FindAction("_DEBUG_KILL", throwIfNotFound: true);
+        m_CharacterControls_Aim = m_CharacterControls.FindAction("Aim", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -359,6 +380,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_ToggleCursor;
     private readonly InputAction m_CharacterControls_Dance;
     private readonly InputAction m_CharacterControls__DEBUG_KILL;
+    private readonly InputAction m_CharacterControls_Aim;
     public struct CharacterControlsActions
     {
         private @PlayerControls m_Wrapper;
@@ -373,6 +395,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @ToggleCursor => m_Wrapper.m_CharacterControls_ToggleCursor;
         public InputAction @Dance => m_Wrapper.m_CharacterControls_Dance;
         public InputAction @_DEBUG_KILL => m_Wrapper.m_CharacterControls__DEBUG_KILL;
+        public InputAction @Aim => m_Wrapper.m_CharacterControls_Aim;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -412,6 +435,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @_DEBUG_KILL.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.On_DEBUG_KILL;
                 @_DEBUG_KILL.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.On_DEBUG_KILL;
                 @_DEBUG_KILL.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.On_DEBUG_KILL;
+                @Aim.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAim;
+                @Aim.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAim;
+                @Aim.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAim;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -446,6 +472,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @_DEBUG_KILL.started += instance.On_DEBUG_KILL;
                 @_DEBUG_KILL.performed += instance.On_DEBUG_KILL;
                 @_DEBUG_KILL.canceled += instance.On_DEBUG_KILL;
+                @Aim.started += instance.OnAim;
+                @Aim.performed += instance.OnAim;
+                @Aim.canceled += instance.OnAim;
             }
         }
     }
@@ -462,5 +491,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnToggleCursor(InputAction.CallbackContext context);
         void OnDance(InputAction.CallbackContext context);
         void On_DEBUG_KILL(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
     }
 }
