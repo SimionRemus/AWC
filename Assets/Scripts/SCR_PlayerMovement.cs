@@ -27,7 +27,10 @@ public class SCR_PlayerMovement : NetworkBehaviour
     private float runSpeed; //Change these in animator blend tree to match;
     [SerializeField]
     private Transform targetAim;
+    [SerializeField]
     private bool isAiming;
+    [SerializeField]
+    private bool aimStarted;
     private float gravity;
     private float jumpHeight = 3f;
     private float jumpTime = 8f;
@@ -59,6 +62,10 @@ public class SCR_PlayerMovement : NetworkBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Rig aimRig;
     [SerializeField] private Transform rigTarget;
+    [SerializeField] private float aimTransitionTime =0.1f;
+    private float layerWeightVelocityTrue;
+    private float layerWeightVelocityFalse;
+    private float weightValue;
     #endregion
 
     private void Awake()
@@ -187,6 +194,7 @@ public class SCR_PlayerMovement : NetworkBehaviour
     private void LateUpdate()
     {
         cam.transform.position = camTarget.position;
+        rigTarget.position = gameObject.transform.position + cam.transform.forward * 10;
     }
 
     #region InputHandling
@@ -196,16 +204,11 @@ public class SCR_PlayerMovement : NetworkBehaviour
         if(context.canceled)
         {
             isAiming = false;
-            //release arrow
-            animator.SetLayerWeight(1, 0f);
-            aimRig.weight = 0;
+            aimStarted = false;
         }
-        if(context.started || context.performed)
+        if (context.started || context.performed)
         {
             isAiming = true;
-            //play aiming animation
-            animator.SetLayerWeight(1, 1f);
-            aimRig.weight = 1;
         }
     }
     private void OnMovementInput(InputAction.CallbackContext context)
@@ -261,9 +264,38 @@ public class SCR_PlayerMovement : NetworkBehaviour
 
     private void HandleAnimation()
     {
-        if(wasKilled)
+        if (wasKilled)
         {
             animator.SetTrigger("wasKilled");
+        }
+
+
+        if (isAiming)
+        {
+            //play aiming animation
+            if (aimStarted)
+            {
+                animator.Play("Aiming", 1, 0f);
+            }
+            weightValue=Mathf.SmoothDamp(weightValue, 1f, ref layerWeightVelocityTrue, aimTransitionTime);
+            animator.SetLayerWeight(1, weightValue);
+            aimRig.weight = weightValue;
+        }
+        else
+        {
+            //release arrow
+            weightValue = Mathf.SmoothDamp(weightValue, 0f, ref layerWeightVelocityFalse, aimTransitionTime);
+            animator.SetLayerWeight(1, weightValue);
+            aimRig.weight = weightValue;
+        }
+
+        if (isAiming == false && aimStarted == false)
+        {
+            aimStarted = true;
+        }
+        else if (isAiming == true && aimStarted == true)
+        {
+            aimStarted = false;
         }
 
         animator.SetFloat("Horizontal",playerMovement.x*currentSpeed);
@@ -296,7 +328,6 @@ public class SCR_PlayerMovement : NetworkBehaviour
             currentCamRotX -= rotatDisplacement.x;
             currentCamRotX = Mathf.Clamp(currentCamRotX, -85, 85);
             cam.transform.localEulerAngles = new Vector3(currentCamRotX, 0, 0);
-            rigTarget.position = cam.transform.forward * 1000;
         }
     }
 

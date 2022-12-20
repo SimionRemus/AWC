@@ -14,7 +14,7 @@ public class SCR_ShootArrow : NetworkBehaviour
 
     [SerializeField] private Transform arrowSpawnPoint;
 
-    private bool isReloading;
+    public bool isReloading;
 
     private void Start()
     {
@@ -32,7 +32,11 @@ public class SCR_ShootArrow : NetworkBehaviour
         {
             return;
         }
-        if(Input.GetMouseButtonUp(0))
+        if (currentArrow != null)
+        {
+            currentArrow.transform.SetPositionAndRotation(arrowSpawnPoint.transform.position, arrowSpawnPoint.transform.rotation);
+        }
+        if (Input.GetMouseButtonUp(0))
         {
             Fire(15f);
         }
@@ -49,9 +53,15 @@ public class SCR_ShootArrow : NetworkBehaviour
     private IEnumerator ReloadAfterTime()
     {
         yield return new WaitForSeconds(reloadTime);
-        currentArrow=Instantiate(prefab,arrowSpawnPoint.position,arrowSpawnPoint.rotation);
+        // currentArrow=Instantiate(prefab,arrowSpawnPoint.position, arrowSpawnPoint.rotation);
+        // currentArrow.transform.SetParent(arrowSpawnPoint);
+        isReloading = false;
+    }
+
+    public void InstantiateNewArrow()
+    {
+        currentArrow=Instantiate(prefab,arrowSpawnPoint.position, arrowSpawnPoint.rotation);
         currentArrow.transform.SetParent(arrowSpawnPoint);
-        isReloading=false;
     }
 
     public void Fire(float firepower)
@@ -64,5 +74,6 @@ public class SCR_ShootArrow : NetworkBehaviour
         currentArrow=null;
         Reload();
     }
+
 
 }

@@ -10,16 +10,10 @@ public class SCR_Arrow : MonoBehaviour
 
     private bool didHit;
 
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
     private void Start()
     {
         rb.isKinematic=true;
-        // rb.centerOfMass=new Vector3(0f,0f,0.86f);
         didHit=false;
-        // torque=new Vector3(0,5,0);
     }
 
     public void Fly(Vector3 force)
