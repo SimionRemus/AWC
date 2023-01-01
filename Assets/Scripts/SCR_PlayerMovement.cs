@@ -39,7 +39,8 @@ public class SCR_PlayerMovement : NetworkBehaviour
     private float JumpCoefficient = 4f;
     private bool isJumping =false;
     private bool isJumpPressed = false; //get this from input controller
-    private bool wasKilled = false;
+    public bool wasKilled = false;
+    private float respawnTime = 7.267f;
     private bool isGrounded = true;
 
     [SerializeField]
@@ -141,7 +142,6 @@ public class SCR_PlayerMovement : NetworkBehaviour
         {
             sceneCamera.gameObject.SetActive(true);
         }
-
         UI_playPanel.SetActive(true);
         UI_playPanel.GetComponent<UIDocument>().rootVisualElement.style.display=DisplayStyle.Flex;
     }
@@ -153,46 +153,58 @@ public class SCR_PlayerMovement : NetworkBehaviour
         {
             return;
         }
-        if (isRunning)
+        if (wasKilled)
         {
-            currentSpeed = Mathf.Clamp(currentSpeed + deltaSpeed, 0, runSpeed);
+            StartCoroutine(Respawn());
+            wasKilled = false;
         }
         else
         {
-            currentSpeed = Mathf.Clamp(currentSpeed + deltaSpeed, 0, walkSpeed);
-        }
-        HandleRotation();
-        HandleAnimation();
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dance"))
-        {
-            currentMovement = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * playerMovement * Time.deltaTime * currentSpeed;
-            currentMovement.y = verticalMovement;
-            characterController.Move(currentMovement);
-            if (isMovementPressed)
+            if (isRunning)
             {
-                if (isRunning)
-                    deltaSpeed = 0.1f;
-                else
-                {
-                    if (currentSpeed >= walkSpeed)
-                        deltaSpeed = -0.1f;
-                    else
-                        deltaSpeed = 0.1f;
-                }
+                currentSpeed = Mathf.Clamp(currentSpeed + deltaSpeed, 0, runSpeed);
             }
             else
             {
-                deltaSpeed = -0.1f;
+                currentSpeed = Mathf.Clamp(currentSpeed + deltaSpeed, 0, walkSpeed);
             }
+            HandleRotation();
+            HandleAnimation();
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dance"))
+            {
+                currentMovement = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * playerMovement * Time.deltaTime * currentSpeed;
+                currentMovement.y = verticalMovement;
+                characterController.Move(currentMovement);
+                if (isMovementPressed)
+                {
+                    if (isRunning)
+                        deltaSpeed = 0.1f;
+                    else
+                    {
+                        if (currentSpeed >= walkSpeed)
+                            deltaSpeed = -0.1f;
+                        else
+                            deltaSpeed = 0.1f;
+                    }
+                }
+                else
+                {
+                    deltaSpeed = -0.1f;
+                }
+            }
+            isGrounded = characterController.isGrounded;
+            HandleGravity();
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dance"))
+                HandleJump();
         }
-        isGrounded = characterController.isGrounded;
-        HandleGravity();
-        HandleJump();
-        
     }
 
     private void LateUpdate()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
         cam.transform.position = camTarget.position;
         rigTarget.position = gameObject.transform.position + cam.transform.forward * 10;
     }
@@ -267,8 +279,8 @@ public class SCR_PlayerMovement : NetworkBehaviour
         if (wasKilled)
         {
             animator.SetTrigger("wasKilled");
+            return;
         }
-
 
         if (isAiming)
         {
@@ -335,13 +347,11 @@ public class SCR_PlayerMovement : NetworkBehaviour
     {
         if (isJumpPressed && isGrounded && !isJumping)
         {
-            Debug.Log("Jumping");
             isJumping = true;
             verticalMovement = initJumpVelocity * Time.deltaTime *JumpCoefficient;
         }
         else if (!isJumpPressed && isGrounded && isJumping)
         {
-            Debug.Log("Setting isJumping to false;");
             isJumping = false;
         }
     }
@@ -351,5 +361,13 @@ public class SCR_PlayerMovement : NetworkBehaviour
         float apexTime = jumpTime / 2;
         gravity = (-2 * jumpHeight) / Mathf.Pow(apexTime,2);
         initJumpVelocity = (2 * jumpHeight) / apexTime;
+    }
+
+    private IEnumerator Respawn()
+    {
+        HandleAnimation();
+        yield return new WaitForSeconds(respawnTime);
+        this.transform.position = spawnPoints.transform.GetChild(Random.Range(0, spawnPoints.transform.childCount - 1)).transform.position;
+        animator.SetTrigger("wasRespawned");
     }
 }

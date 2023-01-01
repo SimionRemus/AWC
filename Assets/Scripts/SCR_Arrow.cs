@@ -39,17 +39,22 @@ public class SCR_Arrow : MonoBehaviour
     {
         if(didHit) return;
         
-        if(other.collider.CompareTag("Terrain")||other.collider.CompareTag("Player")) //use this to check what was hit, current condition is always true;
+        if(other.collider.CompareTag("Terrain")) 
         {
             didHit=true;
             StopCoroutine(LookAt());
             rb.isKinematic=true;
             gameObject.GetComponent<CapsuleCollider>().enabled = false;
-            // rb.velocity=Vector3.zero;
-            // rb.angularVelocity=Vector3.zero;
-            // transform.SetParent(other.transform);
         }
-        
+        if (other.collider.CompareTag("Player") && !other.gameObject.GetComponent<SCR_PlayerMovement>().IsOwner)
+        {
+            didHit = true;
+            StopCoroutine(LookAt());
+            rb.isKinematic = true;
+            gameObject.GetComponent<CapsuleCollider>().enabled = false;
+            other.gameObject.GetComponent<SCR_PlayerMovement>().wasKilled = true;
+        }
+
     }
 
     private void PositionTrack()

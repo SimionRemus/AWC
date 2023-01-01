@@ -19,8 +19,8 @@ public class SCR_ShootArrow : NetworkBehaviour
     private void Start()
     {
         reloadTime=2f;
-        currentArrow=Instantiate(original: prefab,arrowSpawnPoint.position,arrowSpawnPoint.rotation);
-        currentArrow.transform.SetParent(arrowSpawnPoint);
+        //currentArrow=Instantiate(original: prefab,arrowSpawnPoint.position,arrowSpawnPoint.rotation);
+        //currentArrow.transform.SetParent(arrowSpawnPoint);
     }
 
     /// <summary>
